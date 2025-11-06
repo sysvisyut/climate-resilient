@@ -24,7 +24,7 @@ from app.models import models as m
 # TODO_FILL_RDS_USER
 # TODO_FILL_RDS_PASSWORD
 
-SQLITE_PATH = "/Users/hari/Projects/climate-resilient-aws/backend/climate_health.db"  # TODO_FILL_SQLITE_PATH_IF_DIFFERENT
+SQLITE_PATH = "/Users/hari/Project buffer/climate-resilient-aws/backend/climate_health.db"  # TODO_FILL_SQLITE_PATH_IF_DIFFERENT
 SQLITE_URL = f"sqlite:///{SQLITE_PATH}"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
