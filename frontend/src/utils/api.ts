@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
   // Check if we're in a browser environment
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token');
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,11 +25,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401 && typeof window !== 'undefined') {
+    if (error.response && error.response.status === 401 && typeof window !== "undefined") {
       // Clear token and redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
@@ -38,9 +38,9 @@ api.interceptors.response.use(
 // Auth endpoints
 export const login = async (email: string, password: string) => {
   const formData = new FormData();
-  formData.append('username', email);
-  formData.append('password', password);
-  
+  formData.append("username", email);
+  formData.append("password", password);
+
   const response = await axios.post(`${API_URL}/auth/token`, formData);
   return response.data;
 };
@@ -53,13 +53,13 @@ export const register = async (userData: {
   hospital_name?: string;
   location_id?: number;
 }) => {
-  const response = await api.post('/auth/register', userData);
+  const response = await api.post("/auth/register", userData);
   return response.data;
 };
 
 // Locations endpoints
 export const getLocations = async (type?: string) => {
-  const response = await api.get('/data/locations', {
+  const response = await api.get("/data/locations", {
     params: { location_type: type },
   });
   return response.data;
@@ -114,13 +114,13 @@ export const getHospitalData = async (
 
 // Summary endpoint
 export const getDataSummary = async () => {
-  const response = await api.get('/data/summary');
+  const response = await api.get("/data/summary");
   return response.data;
 };
 
 // Alerts endpoint
 export const getAlerts = async (riskThreshold = 0.7) => {
-  const response = await api.get('/data/alerts', {
+  const response = await api.get("/data/alerts", {
     params: { risk_threshold: riskThreshold },
   });
   return response.data;
@@ -159,16 +159,20 @@ export const getClimateProjections = async (locationId: number, year?: number) =
 };
 
 // Enhanced prediction endpoints
-export const getEnhancedHealthRisks = async (locationId: number, useRealTime = true, date?: string) => {
+export const getEnhancedHealthRisks = async (
+  locationId: number,
+  useRealTime = true,
+  date?: string
+) => {
   const response = await api.get(`/enhanced/health-risks/${locationId}`, {
-    params: { use_real_time: true, date_str: date },  // Always use real-time data
+    params: { use_real_time: true, date_str: date }, // Always use real-time data
   });
   return response.data;
 };
 
 export const getEnhancedResourceNeeds = async (locationId: number, useRealTime = true) => {
   const response = await api.get(`/enhanced/resource-needs/${locationId}`, {
-    params: { use_real_time: true },  // Always use real-time data
+    params: { use_real_time: true }, // Always use real-time data
   });
   return response.data;
 };
@@ -194,12 +198,12 @@ export const getRealTimeWeather = async (locationId: number, updateDb = false) =
 
 // Admin only endpoints
 export const getClimateHealthCorrelation = async () => {
-  const response = await api.get('/predictions/climate-health-correlation');
+  const response = await api.get("/predictions/climate-health-correlation");
   return response.data;
 };
 
 export const trainModels = async () => {
-  const response = await api.post('/predictions/train-models');
+  const response = await api.post("/predictions/train-models");
   return response.data;
 };
 
