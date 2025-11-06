@@ -60,3 +60,15 @@ backend/models/*
 .env.development.local
 .env.test.local
 .env.production.local
+env.json
+
+
+#aws
+.aws-sam/
+samconfig.toml
+
+#frontend
+frontend/package-lock.json
+frontend/.next/
+frontend/node_modules/
+frontend/.env

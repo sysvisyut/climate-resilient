@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Climate-Resilient Healthcare - FastAPI on Lambda via Mangum
+
+Globals:
+  Function:
+    Runtime: python3.11
+    Timeout: 30
+    MemorySize: 1024
+
+Parameters:
+  DatabaseUrl:
+    Type: String
+    Description: RDS DB URL
+  OpenWeatherApiKey:
+    Type: String
+    NoEcho: true
+    Description: OpenWeather API key
+  JwtSecretKey:
+    Type: String
+    NoEcho: true
+    Description: JWT secret for auth
+
+Resources:
+  FastApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: climate-health-fastapi
+      CodeUri: backend/
+      Handler: lambda_handler.handler
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonS3FullAccess
+        - AmazonRDSDataFullAccess
+      Environment:
+        Variables:
+          DATABASE_URL: !Ref DatabaseUrl
+          OPENWEATHER_API_KEY: !Ref OpenWeatherApiKey
+          JWT_SECRET_KEY: !Ref JwtSecretKey
+      Events:
+        ApiProxy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway URL (Prod)
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

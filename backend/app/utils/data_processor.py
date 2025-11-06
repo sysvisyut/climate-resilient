@@ -167,10 +167,7 @@ def process_hospital_data(hospital_df, db):
 def calculate_derived_metrics():
     """Calculate additional metrics and store them in the processed folder"""
     try:
-        # Connect to SQLite database
-        db_path = "climate_health.db"
-        conn = sqlite3.connect(db_path)
-        
+        # Use SQLAlchemy engine so it works for SQLite or Postgres
         # Get current health data
         current_health_df = pd.read_sql("""
             SELECT h.*, l.name as location_name, l.population
@@ -178,7 +175,7 @@ def calculate_derived_metrics():
             JOIN locations l ON h.location_id = l.id
             WHERE h.is_projected = 0 
             ORDER BY h.date DESC
-        """, conn)
+        """, engine)
         
         # Calculate disease rates per 100,000 people
         current_health_df['dengue_rate'] = current_health_df['dengue_cases'] * 100000 / current_health_df['population']
@@ -207,7 +204,7 @@ def calculate_derived_metrics():
             JOIN locations l ON h.location_id = l.id
             WHERE h.is_projected = 0
             ORDER BY h.date DESC
-        """, conn)
+        """, engine)
         
         # Calculate resource per 100,000 people
         current_hospital_df['beds_per_100k'] = current_hospital_df['total_beds'] * 100000 / current_hospital_df['population']
@@ -255,7 +252,7 @@ def calculate_derived_metrics():
         logger.error(f"Error calculating derived metrics: {e}")
         raise
     finally:
-        conn.close()
+        pass
 
 def main():
     """Main ETL function"""

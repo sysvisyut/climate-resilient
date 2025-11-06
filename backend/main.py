@@ -11,7 +11,7 @@ patch_bcrypt()
 
 from app.models.database import engine, Base, get_db
 from app.models.models import User
-from app.routers import auth, data, predictions, enhanced_predictions
+from app.routers import auth, data, enhanced_predictions
 from app.utils.data_generator import generate_all_data
 from app.utils.data_processor import main as process_data
 
@@ -41,7 +41,6 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router)
 app.include_router(data.router)
-app.include_router(predictions.router)
 app.include_router(enhanced_predictions.router)
 
 
