@@ -8,7 +8,7 @@ from app.utils.data_generator import generate_all_data
 from app.utils.data_processor import main as process_and_load_data
 from app.models.database import Base, engine
 from app.auth.auth import get_password_hash
-from app.models.models import User
+from app.models.models import User, Location
 from sqlalchemy.orm import sessionmaker
 
 # Setup logging
@@ -82,12 +82,7 @@ def create_users():
         session.add(admin_user)
         
         # Create hospital user for each location (state/UT)
-        # First, get all locations
-        conn = sqlite3.connect('climate_health.db')
-        cursor = conn.cursor()
-        cursor.execute('SELECT id, name FROM locations')
-        locations = cursor.fetchall()
-        conn.close()
+        locations = session.query(Location.id, Location.name).all()
         
         for loc_id, loc_name in locations:
             hospital_user = User(

@@ -16,6 +16,7 @@ import sys
 # Import custom scaler for model loading
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from app.utils.scalers import DummyScaler
+from app.models.database import engine  # Use SQLAlchemy engine for DB access (SQLite or Postgres)
 
 # TensorFlow is optional for quick local setup; guard its import
 try:
@@ -55,9 +56,6 @@ class RiskClassifier:
     
     def load_training_data(self):
         """Load data from SQLite database for training"""
-        # Connect to SQLite database
-        conn = sqlite3.connect("climate_health.db")
-        
         # Query to join climate and health data
         query = """
         SELECT 
@@ -72,9 +70,8 @@ class RiskClassifier:
         WHERE c.is_projected = 0  -- Only use actual data for training
         """
         
-        # Load data into DataFrame
-        df = pd.read_sql(query, conn)
-        conn.close()
+        # Load data into DataFrame (works for SQLite or Postgres via SQLAlchemy engine)
+        df = pd.read_sql(query, engine)
         
         # Convert date to datetime and extract features
         df['date'] = pd.to_datetime(df['date'])
@@ -338,9 +335,6 @@ class DiseaseForecaster:
     
     def load_training_data(self):
         """Load time series data for LSTM training"""
-        # Connect to SQLite database
-        conn = sqlite3.connect("climate_health.db")
-        
         # Query to join climate and health data
         query = """
         SELECT 
@@ -356,9 +350,8 @@ class DiseaseForecaster:
         ORDER BY c.location_id, c.date
         """
         
-        # Load data into DataFrame
-        df = pd.read_sql(query, conn)
-        conn.close()
+        # Load data into DataFrame via SQLAlchemy engine
+        df = pd.read_sql(query, engine)
         
         # Convert date to datetime and sort
         df['date'] = pd.to_datetime(df['date'])
@@ -716,9 +709,6 @@ class ResourcePredictor:
     
     def load_training_data(self):
         """Load data from SQLite database for training"""
-        # Connect to SQLite database
-        conn = sqlite3.connect("climate_health.db")
-        
         # Query to join health and hospital data
         query = """
         SELECT 
@@ -733,9 +723,8 @@ class ResourcePredictor:
         WHERE h.is_projected = 0  -- Only use actual data for training
         """
         
-        # Load data into DataFrame
-        df = pd.read_sql(query, conn)
-        conn.close()
+        # Load data into DataFrame via SQLAlchemy engine
+        df = pd.read_sql(query, engine)
         
         # Convert date to datetime and extract features
         df['date'] = pd.to_datetime(df['date'])
