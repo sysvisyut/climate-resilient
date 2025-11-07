@@ -150,15 +150,15 @@ const IndiaMap = ({ colorBy, onLocationClick }: IndiaMapProps) => {
     } else {
       // Use risk levels (categorical converted to numeric for visualization)
       if (colorBy === 'dengue') {
-        return data.map((loc) => riskLevelToValue[loc.dengue_risk_level || 'unknown']);
+        return data.map((loc) => riskLevelToValue[(loc.dengue_risk_level || 'unknown') as keyof typeof riskLevelToValue]);
       } else if (colorBy === 'malaria') {
-        return data.map((loc) => riskLevelToValue[loc.malaria_risk_level || 'unknown']);
+        return data.map((loc) => riskLevelToValue[(loc.malaria_risk_level || 'unknown') as keyof typeof riskLevelToValue]);
       } else if (colorBy === 'heatstroke') {
-        return data.map((loc) => riskLevelToValue[loc.heatstroke_risk_level || 'unknown']);
+        return data.map((loc) => riskLevelToValue[(loc.heatstroke_risk_level || 'unknown') as keyof typeof riskLevelToValue]);
       } else if (colorBy === 'diarrhea') {
-        return data.map((loc) => riskLevelToValue[loc.diarrhea_risk_level || 'unknown']);
+        return data.map((loc) => riskLevelToValue[(loc.diarrhea_risk_level || 'unknown') as keyof typeof riskLevelToValue]);
       } else {
-        return data.map((loc) => riskLevelToValue[loc.overall_risk_level || 'unknown']);
+        return data.map((loc) => riskLevelToValue[(loc.overall_risk_level || 'unknown') as keyof typeof riskLevelToValue]);
       }
     }
   };
@@ -295,8 +295,7 @@ const IndiaMap = ({ colorBy, onLocationClick }: IndiaMapProps) => {
               locations: data.map((loc) => loc.name),
               z: getColorValues(),
               text: data.map((loc) => getHoverText(loc)),
-              colorscale: getColorScale(),
-              autocolorscale: false,
+              colorscale: getColorScale() as any,
               colorbar: {
                 title: {
                   text: getColorBarTitle(),
@@ -316,7 +315,7 @@ const IndiaMap = ({ colorBy, onLocationClick }: IndiaMapProps) => {
             },
           ]}
           layout={{
-            title: getMapTitle(),
+            title: { text: getMapTitle() },
             geo: {
               scope: 'asia',
               showlakes: true,
@@ -333,7 +332,7 @@ const IndiaMap = ({ colorBy, onLocationClick }: IndiaMapProps) => {
           config={{ responsive: true }}
           onClick={(event) => {
             if (event.points && event.points[0]) {
-              const locationName = event.points[0].location;
+              const locationName = (event.points[0] as any).location as string;
               console.log('Map click detected on:', locationName);
               
               const locationData = data.find((loc) => loc.name === locationName);

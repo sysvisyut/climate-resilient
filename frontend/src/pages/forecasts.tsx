@@ -143,10 +143,10 @@ export default function ForecastsPage() {
           }
         ]}
         layout={{
-          title: `${disasterName} Risk Forecast`,
-          xaxis: { title: 'Date' },
+          title: { text: `${disasterName} Risk Forecast` },
+          xaxis: { title: { text: 'Date' } },
           yaxis: { 
-            title: 'Risk Probability (%)',
+            title: { text: 'Risk Probability (%)' },
             range: [0, 100]
           },
           autosize: true,

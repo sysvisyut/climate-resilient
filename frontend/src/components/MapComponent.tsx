@@ -17,7 +17,7 @@ const SetMapView = ({ center, zoom }: { center: [number, number]; zoom: number }
 
 interface MapComponentProps {
   geoJson: any;
-  style: (feature: Feature) => any;
+  style: (feature: any) => L.PathOptions;
   onEachFeature: (feature: Feature, layer: L.Layer) => void;
 }
 
@@ -25,8 +25,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ geoJson, style, onEachFeatu
   // Fix Leaflet's default icon issue
   useEffect(() => {
     // This code only runs on the client
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
+    delete (L.Icon.Default.prototype as any)._getIconUrl;
+    (L.Icon.Default as any).mergeOptions({
       iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
       iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
       shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
@@ -47,7 +47,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ geoJson, style, onEachFeatu
       {geoJson && (
         <GeoJSON 
           data={geoJson} 
-          style={style} 
+          style={style as any} 
           onEachFeature={onEachFeature}
         />
       )}

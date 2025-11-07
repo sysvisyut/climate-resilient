@@ -185,7 +185,16 @@ const IndiaLeafletMap: React.FC<IndiaMapProps> = ({ colorBy, onLocationClick }) 
         case 'overall': rate = locationData.overall_burden || 0; break;
       }
       content += `${colorBy.charAt(0).toUpperCase() + colorBy.slice(1)} Rate: ${rate.toFixed(2)} per 100k<br/>`;
-      content += `Cases: ${locationData[`${colorBy}_cases`] || 0}<br/>`;
+      if (colorBy !== 'overall') {
+        let cases = 0;
+        switch (colorBy) {
+          case 'dengue': cases = locationData.dengue_cases || 0; break;
+          case 'malaria': cases = locationData.malaria_cases || 0; break;
+          case 'heatstroke': cases = locationData.heatstroke_cases || 0; break;
+          case 'diarrhea': cases = locationData.diarrhea_cases || 0; break;
+        }
+        content += `Cases: ${cases}<br/>`;
+      }
     }
 
     // Add hospital data if available

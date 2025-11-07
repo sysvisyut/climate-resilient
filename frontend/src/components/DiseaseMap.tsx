@@ -43,9 +43,9 @@ const DiseaseMap: React.FC<DiseaseMapProps> = ({ data, colorBy, viewMode, onLoca
 
   // Fix Leaflet's default icon issue
   useEffect(() => {
-    // This code only runs on the client
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
+    // This code only runs on the client; cast to any to access private leaflet property
+    delete (L.Icon.Default.prototype as any)._getIconUrl;
+    (L.Icon.Default as any).mergeOptions({
       iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
       iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
       shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
@@ -112,8 +112,8 @@ const DiseaseMap: React.FC<DiseaseMapProps> = ({ data, colorBy, viewMode, onLoca
   };
 
   // Style function for GeoJSON
-  const style = (feature: Feature): L.PathOptions => {
-    const stateName = feature.properties?.NAME_1 || feature.properties?.name;
+  const style = (feature: any): L.PathOptions => {
+    const stateName = feature?.properties?.NAME_1 || feature?.properties?.name;
     return {
       fillColor: getColor(stateName),
       weight: 1,

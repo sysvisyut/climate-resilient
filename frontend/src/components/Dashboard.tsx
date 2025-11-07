@@ -33,6 +33,11 @@ interface DashboardProps {
   userLocationId?: number;
 }
 
+type LocationOption = {
+  location_id: number;
+  name: string;
+};
+
 const Dashboard = ({ userRole, userLocationId }: DashboardProps) => {
   const [tab, setTab] = useState(0);
   const [mapColorBy, setMapColorBy] = useState<'dengue' | 'malaria' | 'heatstroke' | 'diarrhea' | 'overall'>('overall');
@@ -41,10 +46,7 @@ const Dashboard = ({ userRole, userLocationId }: DashboardProps) => {
     name: string;
   } | null>(null);
   
-  const [locations, setLocations] = useState<Array<{
-    location_id: number;
-    name: string;
-  }>>([]);
+  const [locations, setLocations] = useState<LocationOption[]>([]);
   const [summaryData, setSummaryData] = useState<any>(null);
   const [alerts, setAlerts] = useState<any[]>([]);
   const [riskData, setRiskData] = useState<any>(null);
@@ -80,13 +82,13 @@ const Dashboard = ({ userRole, userLocationId }: DashboardProps) => {
       
       // Extract and set locations list for dropdown
       if (data && data.locations && Array.isArray(data.locations)) {
-        const locationsList = data.locations.map((loc: any) => ({
-          location_id: loc.location_id,
-          name: loc.name
+        const locationsList: LocationOption[] = data.locations.map((loc: any) => ({
+          location_id: Number(loc.location_id),
+          name: String(loc.name)
         }));
         
         // Sort locations alphabetically by name
-        locationsList.sort((a, b) => a.name.localeCompare(b.name));
+        locationsList.sort((a: LocationOption, b: LocationOption) => a.name.localeCompare(b.name));
         setLocations(locationsList);
         console.log('Loaded locations for dropdown:', locationsList.length);
       }
