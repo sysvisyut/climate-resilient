@@ -1,0 +1,38 @@
+# AWS Glue specific ignores
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# AWS
+.aws/
+*.pem
+*.key
+
+# Local development
+.env
+.DS_Store
+*.local
+*.log
+
+# Deployment artifacts
+*.zip
+deployment/temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+temp/
+tmp/
+*.tmp

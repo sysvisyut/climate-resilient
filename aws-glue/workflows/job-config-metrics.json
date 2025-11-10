@@ -1,0 +1,36 @@
+{
+  "Name": "calculate-derived-metrics",
+  "Description": "Calculate risk scores and resilience metrics from RDS data",
+  "Role": "AWSGlueServiceRole-ClimateHealth",
+  "ExecutionProperty": {
+    "MaxConcurrentRuns": 1
+  },
+  "Command": {
+    "Name": "glueetl",
+    "ScriptLocation": "s3://climate-health-glue-scripts/etl-jobs/calculate_derived_metrics.py",
+    "PythonVersion": "3"
+  },
+  "DefaultArguments": {
+    "--job-language": "python",
+    "--job-bookmark-option": "job-bookmark-disable",
+    "--enable-metrics": "true",
+    "--enable-continuous-cloudwatch-log": "true",
+    "--enable-spark-ui": "true",
+    "--spark-event-logs-path": "s3://climate-health-glue-logs/spark-logs/",
+    "--TempDir": "s3://climate-health-glue-temp/",
+    "--SOURCE_DB_CONNECTION": "climate-health-rds-connection",
+    "--TARGET_S3_BUCKET": "climate-health-processed-data",
+    "--TARGET_S3_PREFIX": "metrics"
+  },
+  "MaxRetries": 2,
+  "Timeout": 120,
+  "GlueVersion": "4.0",
+  "NumberOfWorkers": 5,
+  "WorkerType": "G.1X",
+  "Tags": {
+    "Project": "ClimateHealth",
+    "Environment": "Production",
+    "ManagedBy": "Glue",
+    "DataPipeline": "ETL"
+  }
+}

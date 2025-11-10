@@ -1,0 +1,37 @@
+{
+  "Name": "process-health-data",
+  "Description": "Process health/disease data from S3 to RDS",
+  "Role": "AWSGlueServiceRole-ClimateHealth",
+  "ExecutionProperty": {
+    "MaxConcurrentRuns": 1
+  },
+  "Command": {
+    "Name": "glueetl",
+    "ScriptLocation": "s3://climate-health-glue-scripts/etl-jobs/process_health_data.py",
+    "PythonVersion": "3"
+  },
+  "DefaultArguments": {
+    "--job-language": "python",
+    "--job-bookmark-option": "job-bookmark-enable",
+    "--enable-metrics": "true",
+    "--enable-continuous-cloudwatch-log": "true",
+    "--enable-spark-ui": "true",
+    "--spark-event-logs-path": "s3://climate-health-glue-logs/spark-logs/",
+    "--TempDir": "s3://climate-health-glue-temp/",
+    "--SOURCE_S3_BUCKET": "climate-health-raw-data",
+    "--SOURCE_S3_KEY": "raw/health_data.csv",
+    "--TARGET_DB_CONNECTION": "climate-health-rds-connection",
+    "--TARGET_TABLE_NAME": "health_data"
+  },
+  "MaxRetries": 2,
+  "Timeout": 60,
+  "GlueVersion": "4.0",
+  "NumberOfWorkers": 2,
+  "WorkerType": "G.1X",
+  "Tags": {
+    "Project": "ClimateHealth",
+    "Environment": "Production",
+    "ManagedBy": "Glue",
+    "DataPipeline": "ETL"
+  }
+}

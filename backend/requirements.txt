@@ -12,3 +12,7 @@ faker==19.10.0
 plotly==5.17.0
 passlib==1.7.4
 bcrypt==4.0.1
+
+# AWS Services
+boto3==1.34.0
+python-dotenv==1.0.0

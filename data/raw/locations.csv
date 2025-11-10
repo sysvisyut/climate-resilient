@@ -1,0 +1,37 @@
+name,type,population,area,id
+Andhra Pradesh,state,49577103,162975,1
+Arunachal Pradesh,state,1383727,83743,2
+Assam,state,31205576,78438,3
+Bihar,state,104099452,94163,4
+Chhattisgarh,state,25545198,135192,5
+Goa,state,1458545,3702,6
+Gujarat,state,60439692,196024,7
+Haryana,state,25351462,44212,8
+Himachal Pradesh,state,6864602,55673,9
+Jharkhand,state,32988134,79714,10
+Karnataka,state,61095297,191791,11
+Kerala,state,33406061,38863,12
+Madhya Pradesh,state,72626809,308252,13
+Maharashtra,state,112374333,307713,14
+Manipur,state,2855794,22327,15
+Meghalaya,state,2966889,22429,16
+Mizoram,state,1097206,21081,17
+Nagaland,state,1978502,16579,18
+Odisha,state,41974219,155707,19
+Punjab,state,27743338,50362,20
+Rajasthan,state,68548437,342239,21
+Sikkim,state,610577,7096,22
+Tamil Nadu,state,72147030,130058,23
+Telangana,state,35003674,112077,24
+Tripura,state,3673917,10486,25
+Uttar Pradesh,state,199812341,240928,26
+Uttarakhand,state,10086292,53483,27
+West Bengal,state,91276115,88752,28
+Andaman and Nicobar Islands,union_territory,380581,8249,29
+Chandigarh,union_territory,1055450,114,30
+Dadra and Nagar Haveli and Daman and Diu,union_territory,585764,603,31
+Delhi,union_territory,16787941,1483,32
+Jammu and Kashmir,union_territory,12267032,42241,33
+Ladakh,union_territory,274000,59146,34
+Lakshadweep,union_territory,64473,32,35
+Puducherry,union_territory,1247953,479,36

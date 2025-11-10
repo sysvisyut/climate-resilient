@@ -1,0 +1,55 @@
+{
+  "Name": "climate-health-etl-workflow",
+  "Description": "Complete ETL workflow for climate and health data processing",
+  "DefaultRunProperties": {
+    "Environment": "Production",
+    "Project": "ClimateHealth"
+  },
+  "MaxConcurrentRuns": 1,
+  "Jobs": [
+    {
+      "Name": "process-locations",
+      "DependsOn": []
+    },
+    {
+      "Name": "process-climate-data",
+      "DependsOn": ["process-locations"]
+    },
+    {
+      "Name": "process-health-data",
+      "DependsOn": ["process-locations"]
+    },
+    {
+      "Name": "process-hospital-data",
+      "DependsOn": ["process-locations"]
+    },
+    {
+      "Name": "calculate-derived-metrics",
+      "DependsOn": [
+        "process-climate-data",
+        "process-health-data",
+        "process-hospital-data"
+      ]
+    }
+  ],
+  "Triggers": [
+    {
+      "Name": "start-workflow-trigger",
+      "Type": "SCHEDULED",
+      "Schedule": "cron(0 2 * * ? *)",
+      "Description": "Trigger workflow daily at 2:00 AM UTC",
+      "StartOnCreation": true
+    },
+    {
+      "Name": "on-demand-trigger",
+      "Type": "ON_DEMAND",
+      "Description": "Manual trigger for on-demand execution"
+    }
+  ],
+  "Tags": {
+    "Project": "ClimateHealth",
+    "Environment": "Production",
+    "ManagedBy": "Glue",
+    "DataPipeline": "ETL"
+  }
+}
